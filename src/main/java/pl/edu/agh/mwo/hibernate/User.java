@@ -1,24 +1,15 @@
 package pl.edu.agh.mwo.hibernate;
 
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 public class User {
 
     private long id;
     private String username;
-    private String email;
-    private Set <Album> albums;
-
-    public User() {
-
-    }
-
-    public User(long id, String username, String email) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.albums = new HashSet<Album>();
-    }
+    private LocalDate joinDate;
+    private Set<Album> albums = new HashSet<>();
 
     public long getId() {
         return id;
@@ -36,12 +27,12 @@ public class User {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
+    public LocalDate getJoinDate() {
+        return joinDate;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setJoinDate(LocalDate joinDate) {
+        this.joinDate = joinDate;
     }
 
     public Set<Album> getAlbums() {
