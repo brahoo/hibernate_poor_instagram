@@ -10,6 +10,7 @@ public class User {
     private String username;
     private LocalDate joinDate;
     private Set<Album> albums = new HashSet<>();
+    private Set<Photo> likedPhotos = new HashSet<>();
 
     public long getId() {
         return id;
@@ -45,5 +46,17 @@ public class User {
 
     public void removeAlbum(Album album) {
         albums.remove(album);
+    }
+
+    public Set<Photo> getLikedPhotos() {
+        return this.likedPhotos;
+    }
+
+    public void addLikedPhoto(Photo photo) {
+        likedPhotos.add(photo);
+    }
+
+    public void removeLikedPhoto(Photo photo) {
+        likedPhotos.remove(photo);
     }
 }

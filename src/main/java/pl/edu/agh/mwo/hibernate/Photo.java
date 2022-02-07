@@ -1,12 +1,15 @@
 package pl.edu.agh.mwo.hibernate;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Photo {
 
     private long id;
     private String name;
     private LocalDate date;
+    private Set<User> likerUsers = new HashSet<>();
 
     public long getId() {
         return id;
@@ -31,4 +34,17 @@ public class Photo {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+    public Set<User> getLikerUsers() {
+        return likerUsers;
+    }
+
+    public void addLikerUser(User user) {
+        likerUsers.add(user);
+    }
+
+    public void removeLikerUser(User user) {
+        likerUsers.remove(user);
+    }
+
 }
