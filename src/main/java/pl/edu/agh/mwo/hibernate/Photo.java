@@ -1,15 +1,26 @@
 package pl.edu.agh.mwo.hibernate;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name = "photos")
 public class Photo {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column
     private String name;
+
+    @Column
     private LocalDate date;
+
     private Set<User> likerUsers = new HashSet<>();
+
 
     public long getId() {
         return id;
