@@ -19,7 +19,7 @@ public class Photo {
     @Column
     private LocalDate date;
 
-    private Set<User> likerUsers = new HashSet<>();
+    //private Set<User> likerUsers = new HashSet<>();
 
 
     public long getId() {
@@ -46,16 +46,16 @@ public class Photo {
         this.date = date;
     }
 
-    public Set<User> getLikerUsers() {
-        return likerUsers;
-    }
-
-    public void addLikerUser(User user) {
-        likerUsers.add(user);
-    }
-
-    public void removeLikerUser(User user) {
-        likerUsers.remove(user);
-    }
+//    public Set<User> getLikerUsers() {
+//        return likerUsers;
+//    }
+//
+//    public void addLikerUser(User user) {
+//        likerUsers.add(user);
+//    }
+//
+//    public void removeLikerUser(User user) {
+//        likerUsers.remove(user);
+//    }
 
 }

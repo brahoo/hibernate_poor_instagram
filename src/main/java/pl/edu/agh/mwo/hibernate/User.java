@@ -23,7 +23,7 @@ public class User {
     @JoinColumn(name = "user_id")
     private Set<Album> albums = new HashSet<>();
 
-    private Set<Photo> likedPhotos = new HashSet<>();
+    //private Set<Photo> likedPhotos = new HashSet<>();
 
 
     public long getId() {
@@ -62,15 +62,15 @@ public class User {
         albums.remove(album);
     }
 
-    public Set<Photo> getLikedPhotos() {
-        return this.likedPhotos;
-    }
-
-    public void addLikedPhoto(Photo photo) {
-        likedPhotos.add(photo);
-    }
-
-    public void removeLikedPhoto(Photo photo) {
-        likedPhotos.remove(photo);
-    }
+//    public Set<Photo> getLikedPhotos() {
+//        return this.likedPhotos;
+//    }
+//
+//    public void addLikedPhoto(Photo photo) {
+//        likedPhotos.add(photo);
+//    }
+//
+//    public void removeLikedPhoto(Photo photo) {
+//        likedPhotos.remove(photo);
+//    }
 }
