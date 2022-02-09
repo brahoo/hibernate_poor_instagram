@@ -1,7 +1,6 @@
 package pl.edu.agh.mwo.hibernate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +16,7 @@ public class Photo {
     private String name;
 
     @Column
-    private LocalDate date;
+    private String date;
 
     //private Set<User> likerUsers = new HashSet<>();
 
@@ -38,11 +37,11 @@ public class Photo {
         this.name = name;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

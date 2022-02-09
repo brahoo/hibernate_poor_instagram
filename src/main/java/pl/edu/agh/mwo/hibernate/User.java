@@ -1,7 +1,6 @@
 package pl.edu.agh.mwo.hibernate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +16,7 @@ public class User {
     private String username;
 
     @Column
-    private LocalDate joinDate;
+    private String joinDate;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -42,11 +41,11 @@ public class User {
         this.username = username;
     }
 
-    public LocalDate getJoinDate() {
+    public String getJoinDate() {
         return joinDate;
     }
 
-    public void setJoinDate(LocalDate joinDate) {
+    public void setJoinDate(String joinDate) {
         this.joinDate = joinDate;
     }
 
