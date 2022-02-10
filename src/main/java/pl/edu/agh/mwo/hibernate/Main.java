@@ -170,7 +170,7 @@ public class Main {
         System.out.println(results);
     }
 
-    public void liekePhoto(long userId, long photoId) {
+    public void likePhoto(long userId, long photoId) {
         String hqlUserId = "from User where id = :id";
         Query<User> queryUser = session.createQuery(hqlUserId, User.class);
         queryUser.setParameter("id", userId);
