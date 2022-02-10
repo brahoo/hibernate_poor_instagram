@@ -13,9 +13,9 @@ public class Main {
     public static void main(String[] args) {
         Main main = new Main();
 
-        main.addDemoStructureUser1();
-        main.addDemoStructureUser2();
-        main.addDemoStructureUser3();
+//        main.addDemoStructureUser1();
+//        main.addDemoStructureUser2();
+//        main.addDemoStructureUser3();
 
         //main.deleteUser(1);
         //main.deleteAlbum(2);
@@ -168,5 +168,20 @@ public class Main {
         org.hibernate.query.Query<Album> query = session.createQuery(hql, Album.class);
         List<Album> results = query.list();
         System.out.println(results);
+    }
+
+    public void liekePhoto(long userId, long photoId) {
+        String hqlUserId = "from User where id = :id";
+        Query<User> queryUser = session.createQuery(hqlUserId, User.class);
+        queryUser.setParameter("id", userId);
+        User user = queryUser.uniqueResult();
+
+        String hqlPhotoId = "from Photo where id = :id";
+        Query<Photo> queryPhoto = session.createQuery(hqlPhotoId, Photo.class);
+        queryPhoto.setParameter("id", photoId);
+        Photo photo = queryPhoto.uniqueResult();
+
+        user.addLikedPhoto(photo);
+        photo.addLikeUser(user);
     }
 }

@@ -51,15 +51,15 @@ public class Photo {
         this.date = date;
     }
 
-    public Set<User> getLikerUsers() {
+    public Set<User> getLikeUsers() {
         return likeUsers;
     }
 
-    public void addLikerUser(User user) {
+    public void addLikeUser(User user) {
         likeUsers.add(user);
     }
 
-    public void removeLikerUser(User user) {
+    public void removeLikeUser(User user) {
         likeUsers.remove(user);
     }
 
