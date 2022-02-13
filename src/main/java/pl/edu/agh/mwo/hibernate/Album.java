@@ -23,6 +23,14 @@ public class Album {
     private Set<Photo> photos = new HashSet<>();
 
 
+    public Album() {
+    }
+
+    public Album(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public long getId() {
         return id;
     }

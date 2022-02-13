@@ -24,8 +24,16 @@ public class Photo {
             joinColumns = @JoinColumn(name = "photo_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<User> likeUsers = new HashSet<>();
+    private Set<User> likingUsers = new HashSet<>();
 
+
+    public Photo() {
+    }
+
+    public Photo(String name, String date) {
+        this.name = name;
+        this.date = date;
+    }
 
     public long getId() {
         return id;
@@ -51,16 +59,15 @@ public class Photo {
         this.date = date;
     }
 
-    public Set<User> getLikeUsers() {
-        return likeUsers;
+    public Set<User> getLikingUsers() {
+        return likingUsers;
     }
 
-    public void addLikeUser(User user) {
-        likeUsers.add(user);
+    public void addLikingUser(User user) {
+        likingUsers.add(user);
     }
 
-    public void removeLikeUser(User user) {
-        likeUsers.remove(user);
+    public void removeLikingUser(User user) {
+        likingUsers.remove(user);
     }
-
 }

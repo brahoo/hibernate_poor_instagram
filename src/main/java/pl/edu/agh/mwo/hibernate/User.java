@@ -22,9 +22,25 @@ public class User {
     @JoinColumn(name = "user_id")
     private Set<Album> albums = new HashSet<>();
 
-    @ManyToMany(mappedBy = "users", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "friendships",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id")
+    )
+    private Set<User> friends = new HashSet<>();
+
+    @ManyToMany(mappedBy = "likingUsers", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Photo> likedPhotos = new HashSet<>();
 
+
+    public User() {
+    }
+
+    public User(String username, String joinDate) {
+        this.username = username;
+        this.joinDate = joinDate;
+    }
 
     public long getId() {
         return id;
@@ -60,6 +76,18 @@ public class User {
 
     public void removeAlbum(Album album) {
         albums.remove(album);
+    }
+
+    public Set<User> getFriends() {
+        return this.friends;
+    }
+
+    public void addFriend(User user) {
+        friends.add(user);
+    }
+
+    public void removeFriend(User user) {
+        friends.remove(user);
     }
 
     public Set<Photo> getLikedPhotos() {
