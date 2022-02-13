@@ -4,7 +4,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Main {
 
@@ -23,7 +25,8 @@ public class Main {
 //        main.likePhoto(2,1);
 //        main.likePhoto(2,5);
 
-        main.makeFriendship(1,2);
+//        main.makeFriendship(1,2);
+//        main.endFriendship(1,2);
 
 //        main.demoDeletePhoto();
 
@@ -106,6 +109,10 @@ public class Main {
         User user = getUser(id);
 
         Transaction transaction = session.beginTransaction();
+        for (User friend : user.getFriends()) {
+            friend.removeFriend(user);
+            session.save(friend);
+        }
         for (Photo photo : user.getLikedPhotos()) {
             photo.removeLikingUser(user);
             session.save(photo);
@@ -136,27 +143,6 @@ public class Main {
         transaction.commit();
     }
 
-//    public void printPhotos() {
-//        String hql = "from Photo";
-//
-//        org.hibernate.query.Query<Photo> query = session.createQuery(hql, Photo.class);
-//        List<Photo> results = query.list();
-//        System.out.println(results);
-//    }
-//
-//    public void printAlbums() {
-//        String hql = "from Album";
-//
-//        org.hibernate.query.Query<Album> query = session.createQuery(hql, Album.class);
-//        List<Album> results = query.list();
-//        System.out.println(results);
-//    }
-
-    public List<User> getDemoStructure() {
-        Query<User> query = session.createQuery("from User", User.class);
-        return query.list();
-    }
-
     public User getUser(long id) {
         String hql = "from User where id = :id";
         Query<User> query = session.createQuery(hql, User.class);
@@ -164,8 +150,29 @@ public class Main {
         return query.uniqueResult();
     }
 
+    public User getUserByAlbum(long id) {
+        String hql = "select user from User as user inner join user.albums as album where album.id = :id";
+        Query<User> query = session.createQuery(hql, User.class);
+        query.setParameter("id", id);
+        return query.uniqueResult();
+    }
+
+    public User getUserByPhoto(long id) {
+        String hql = "select user from User as user inner join user.albums as album inner join album.photos as photo where photo.id = :id";
+        Query<User> query = session.createQuery(hql, User.class);
+        query.setParameter("id", id);
+        return query.uniqueResult();
+    }
+
     public Album getAlbum(long id) {
         String hql = "from Album where id = :id";
+        Query<Album> query = session.createQuery(hql, Album.class);
+        query.setParameter("id", id);
+        return query.uniqueResult();
+    }
+
+    public Album getAlbumByPhoto(long id) {
+        String hql = "select album from Album as album inner join album.photos as photo where photo.id = :id";
         Query<Album> query = session.createQuery(hql, Album.class);
         query.setParameter("id", id);
         return query.uniqueResult();
@@ -191,16 +198,60 @@ public class Main {
         transaction.commit();
     }
 
-    public void likePhoto(long userId, long photoId) {
+    public void endFriendship(long userId, long fiendId) {
         User user = getUser(userId);
-        Photo photo = getPhoto(photoId);
+        User friend = getUser(fiendId);
+        Set<Photo> photosToUnlikeByUser = new HashSet<>();
+        Set<Photo> photosToUnlikeByFriend = new HashSet<>();
 
-        user.addLikedPhoto(photo);
-        photo.addLikingUser(user);
+        for (Photo photo : user.getLikedPhotos()) {
+            if ((getUserByPhoto(photo.getId())).equals(friend)) {
+                photosToUnlikeByUser.add(photo);
+            }
+        }
+
+        for (Photo photo : photosToUnlikeByUser) {
+            unlikePhoto(userId, photo.getId());
+        }
+
+        for (Photo photo : friend.getLikedPhotos()) {
+            if ((getUserByPhoto(photo.getId())).equals(user)) {
+                photosToUnlikeByFriend.add(photo);
+            }
+        }
+
+        for (Photo photo : photosToUnlikeByFriend) {
+            unlikePhoto(fiendId, photo.getId());
+        }
+
+        user.removeFriend(friend);
+        friend.removeFriend(user);
 
         Transaction transaction = session.beginTransaction();
-        session.save(photo);
+        session.save(user);
+        session.save(friend);
         transaction.commit();
+    }
+
+    public boolean isFriend(User user, User friend) {
+        return user.getFriends().contains(friend) || friend.getFriends().contains(user);
+    }
+
+    public void likePhoto(long userId, long photoId) {
+        User user = getUser(userId);
+        User photoOwner = getUserByPhoto(photoId);
+        Photo photo = getPhoto(photoId);
+
+        if (!user.equals(photoOwner) && !isFriend(user, photoOwner)) {
+            System.out.println(user.getUsername() + " must be friend of " + photoOwner.getUsername() + " first.");
+        } else {
+            user.addLikedPhoto(photo);
+            photo.addLikingUser(user);
+
+            Transaction transaction = session.beginTransaction();
+            session.save(photo);
+            transaction.commit();
+        }
     }
 
     public void unlikePhoto(long userId, long photoId) {
@@ -214,37 +265,4 @@ public class Main {
         session.save(photo);
         transaction.commit();
     }
-
-    public User getUserByAlbum(long id) {
-        String hql = "select user from User as user inner join user.albums as album where album.id = :id";
-        Query<User> query = session.createQuery(hql, User.class);
-        query.setParameter("id", id);
-        return query.uniqueResult();
-    }
-
-    public Album getAlbumByPhoto(long id) {
-        String hql = "select album from Album as album inner join album.photos as photo where photo.id = :id";
-        Query<Album> query = session.createQuery(hql, Album.class);
-        query.setParameter("id", id);
-        return query.uniqueResult();
-    }
-
-    public void demoDeletePhoto() {
-        Album album = getAlbum(1);
-        Photo photo = null;
-
-        for (Photo somePhoto : album.getPhotos()) {
-            System.out.println(somePhoto.getName());
-            if (somePhoto.getName().equals("mewy")) {photo=somePhoto;};
-        }
-
-        System.out.println(photo.getName());
-
-        //album.removePhoto(photo);
-        deletePhoto(photo.getId());
-
-
-        System.out.println(album.getPhotos());
-    }
-
 }

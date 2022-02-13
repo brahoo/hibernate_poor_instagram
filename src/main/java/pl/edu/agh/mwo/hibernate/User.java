@@ -23,7 +23,7 @@ public class User {
     private Set<Album> albums = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable (
+    @JoinTable(
             name = "friendships",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id")
