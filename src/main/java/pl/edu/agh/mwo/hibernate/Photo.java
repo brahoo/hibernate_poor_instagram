@@ -18,8 +18,22 @@ public class Photo {
     @Column
     private String date;
 
-    //private Set<User> likerUsers = new HashSet<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "likes",
+            joinColumns = @JoinColumn(name = "photo_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> likingUsers = new HashSet<>();
 
+
+    public Photo() {
+    }
+
+    public Photo(String name, String date) {
+        this.name = name;
+        this.date = date;
+    }
 
     public long getId() {
         return id;
@@ -45,16 +59,16 @@ public class Photo {
         this.date = date;
     }
 
-//    public Set<User> getLikerUsers() {
-//        return likerUsers;
-//    }
-//
-//    public void addLikerUser(User user) {
-//        likerUsers.add(user);
-//    }
-//
-//    public void removeLikerUser(User user) {
-//        likerUsers.remove(user);
-//    }
+    public Set<User> getLikingUsers() {
+        return likingUsers;
+    }
+
+    public void addLikingUser(User user) {
+        likingUsers.add(user);
+    }
+
+    public void removeLikingUser(User user) {
+        likingUsers.remove(user);
+    }
 
 }
