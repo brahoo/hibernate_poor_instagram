@@ -67,7 +67,7 @@ public class User {
     }
 
     public Set<Album> getAlbums() {
-        return this.albums;
+        return albums;
     }
 
     public void addAlbum(Album album) {
@@ -79,7 +79,7 @@ public class User {
     }
 
     public Set<User> getFriends() {
-        return this.friends;
+        return friends;
     }
 
     public void addFriend(User user) {
@@ -91,7 +91,7 @@ public class User {
     }
 
     public Set<Photo> getLikedPhotos() {
-        return this.likedPhotos;
+        return likedPhotos;
     }
 
     public void addLikedPhoto(Photo photo) {

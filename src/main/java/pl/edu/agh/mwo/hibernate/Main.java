@@ -15,22 +15,30 @@ public class Main {
     public static void main(String[] args) {
         Main main = new Main();
 
+
 //        main.deleteDemoStructure();
 //        main.addDemoStructure();
+//
+//        main.makeFriendship(1,2);
+//        main.makeFriendship(1,3);
+//        main.makeFriendship(2,3);
 //
 //        main.likePhoto(1,1);
 //        main.likePhoto(1,4);
 //        main.likePhoto(1,5);
-//        main.likePhoto(2,2);
+//        main.likePhoto(1,6);
 //        main.likePhoto(2,1);
+//        main.likePhoto(2,2);
 //        main.likePhoto(2,5);
+//        main.likePhoto(3,4);
 
-//        main.makeFriendship(1,2);
-//        main.endFriendship(1,2);
 
-//        main.demoDeletePhoto();
 
-//        main.unlikePhoto(1,1);
+//        main.likePhoto(4,3);
+//        main.makeFriendship(1,4);
+//        main.likePhoto(4,3);
+//        main.unlikePhoto(2,1);
+//        main.endFriendship(1,4);
 //        main.deletePhoto(5);
 //        main.deleteAlbum(1);
 //        main.deleteUser(1);
@@ -84,6 +92,12 @@ public class Main {
 
 
         User user4 = new User("Krzysiek", "1980-09-07");
+
+        Album album5 = new Album("Samochody", "Auta sportowe");
+        user4.addAlbum(album5);
+
+        Photo photo6 = new Photo("maserati", "2021-06-08");
+        album5.addPhoto(photo6);
 
 
         Transaction transaction = session.beginTransaction();
@@ -205,7 +219,8 @@ public class Main {
         Set<Photo> photosToUnlikeByFriend = new HashSet<>();
 
         for (Photo photo : user.getLikedPhotos()) {
-            if ((getUserByPhoto(photo.getId())).equals(friend)) {
+            User photoOwner = getUserByPhoto(photo.getId());
+            if (photoOwner.equals(friend)) {
                 photosToUnlikeByUser.add(photo);
             }
         }
@@ -215,7 +230,8 @@ public class Main {
         }
 
         for (Photo photo : friend.getLikedPhotos()) {
-            if ((getUserByPhoto(photo.getId())).equals(user)) {
+            User photoOwner = getUserByPhoto(photo.getId());
+            if (photoOwner.equals(user)) {
                 photosToUnlikeByFriend.add(photo);
             }
         }
